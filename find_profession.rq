@@ -1,0 +1,35 @@
+#+ endpoint: http://145.100.58.46:50053/sparql
+#+ summary: Finding the type of a profession (e.g. "heikeuter") from Brouwers that is not in Hisco through query expansion.
+#+ tags:
+#+  - profession
+
+PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
+PREFIX lexinfo: <http://www.lexinfo.net/ontology/2.0/lexinfo#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix emboemo: <http://cltl.nl/heem-emotions.placeholder/>
+prefix brouwers: <http://cltl.nl/brouwers.placeholder/>
+prefix hisco: <http://cltl.nl/hisco.placeholder/>
+prefix pland: <http://cltl.nl/pland.placeholder/>
+prefix lemon-cltl: <http://cltl.nl/clariah-lemon.placeholder/>
+prefix time: <http://www.w3.org/2006/time#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+select ?entry ?class ?form ?entry3 ?class3 where {
+?entry ontolex:canonicalForm ?_profession .
+?entry ontolex:sense ?sense .
+?sense ontolex:reference ?concept .
+?concept skos:related ?class .
+?concept2 skos:related ?class .
+?sense2 ontolex:reference ?concept2 .
+?entry2 ontolex:sense ?sense2 .
+?entry2 ontolex:canonicalForm ?form .
+?entry3 ontolex:canonicalForm ?form .
+?entry3 ontolex:sense ?sense3 .
+?sense3 ontolex:reference ?concept3 .
+?concept3 skos:related ?class3 .
+FILTER((STRSTARTS(STR(?entry3),"http://cltl.nl/hisco.placeholder/")) && (STRSTARTS(STR(?entry),"http://cltl.nl/brouwers.placeholder/")))
+}

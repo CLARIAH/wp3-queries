@@ -1,0 +1,12 @@
+#+ endpoint: http://145.100.58.46:50053/sparql
+#+ summary: Occurrences of a string e.g. 'paard' (=horse) in information about the entry in fields other than the canonical form.
+#+ tags:
+#+  - name
+
+PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
+
+select * where {
+?entry ontolex:canonicalForm ?_name .
+?otherentries ontolex:canonicalForm ?y .
+filter( regex(str(?y), str(?_name) )) .
+}
