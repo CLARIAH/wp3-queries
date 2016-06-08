@@ -1,0 +1,34 @@
+#+ endpoint: http://145.100.58.46:50053/sparql
+#+ summary: Find a flower by any other name, e.g. try 'roos' for the name parameter
+#+ tags:
+#+  - name
+
+PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
+PREFIX lexinfo: <http://www.lexinfo.net/ontology/2.0/lexinfo#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix emboemo: <http://cltl.nl/heem-emotions.placeholder/>
+prefix brouwers: <http://cltl.nl/brouwers.placeholder/>
+prefix hisco: <http://cltl.nl/hisco.placeholder/>
+prefix pland: <http://cltl.nl/pland.placeholder/>
+prefix lemon-cltl: <http://cltl.nl/clariah-lemon.placeholder/>
+prefix time: <http://www.w3.org/2006/time#>
+
+SELECT  DISTINCT ?otherform ?woord ?a ?tb ?te ?dbped ?plaatje WHERE {
+    ?x ontolex:canonicalForm ?woord .
+    ?x ontolex:canonicalForm ?_name .
+    ?x ontolex:otherForm ?otherform .
+ #  ?x lexinfo:partOfSpeech ?pos .
+    ?x ontolex:sense ?s .
+  	?s ontolex:reference ?c .
+    ?s ontolex:usage ?u .
+  	?u lemon-cltl:geographicalArea ?a .
+  	?u time:hasBeginning ?tb .
+  	?c owl:sameAs ?dbped .
+    ?dbped foaf:depiction ?plaatje .
+}
+  ORDER BY DESC (?dbped)
+LIMIT 1000
